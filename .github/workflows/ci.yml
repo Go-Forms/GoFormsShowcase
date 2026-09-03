@@ -42,7 +42,7 @@ jobs:
           repository: Go-Forms/GoForms
           path: GoForms
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: GoFormsShowcase/go.mod
           cache-dependency-path: GoFormsShowcase/go.sum
