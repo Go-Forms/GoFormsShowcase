@@ -1,0 +1,73 @@
+# This app builds against the framework through `replace goforms => ../GoForms`
+# (see go.mod), which is a path, not a version - so CI reproduces the local
+# layout by checking the framework out as a sibling directory. That is
+# deliberate: the apps here are meant to exercise the framework's tip, and
+# pinning them to a published version would let a regression ship unnoticed.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Rebuilt whenever the framework changes, so a break shows up here rather
+  # than the next time somebody opens this repository.
+  repository_dispatch:
+    types: [goforms-updated]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: GoFormsShowcase
+
+      - name: Check out the framework alongside it
+        uses: actions/checkout@v4
+        with:
+          repository: Go-Forms/GoForms
+          path: GoForms
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: GoFormsShowcase/go.mod
+          cache-dependency-path: GoFormsShowcase/go.sum
+
+      - name: Install Fyne's build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            gcc libgl1-mesa-dev xorg-dev libxkbcommon-dev xvfb
+
+      - name: Build
+        working-directory: GoFormsShowcase
+        run: go build ./...
+
+      - name: Vet
+        working-directory: GoFormsShowcase
+        run: go vet ./...
+
+      - name: Test (headless)
+        if: runner.os == 'Linux'
+        working-directory: GoFormsShowcase
+        run: xvfb-run -a go test ./...
+
+      - name: Test
+        if: runner.os != 'Linux'
+        working-directory: GoFormsShowcase
+        run: go test ./...
