@@ -1,6 +1,6 @@
 package aboutform
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 // AboutForm is the modal half of "switching forms": it is opened with
 // ShowDialog and reports an OK/Cancel DialogResult back to its caller.

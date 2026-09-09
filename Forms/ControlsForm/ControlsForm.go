@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 	"goformsshowcase/eventlog"
 )
 

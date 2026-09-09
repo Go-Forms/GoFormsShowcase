@@ -6,7 +6,7 @@ import (
 
 	"fyne.io/fyne/v2"
 
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 	aboutform "goformsshowcase/Forms/AboutForm"
 	controlsform "goformsshowcase/Forms/ControlsForm"
 	dataform "goformsshowcase/Forms/DataForm"

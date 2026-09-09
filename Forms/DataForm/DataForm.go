@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 	"goformsshowcase/eventlog"
 )
 

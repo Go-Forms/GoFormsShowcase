@@ -2,7 +2,7 @@ package layoutform
 
 import (
 	"fmt"
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 
 	"goformsshowcase/eventlog"
 )
@@ -145,4 +145,8 @@ func (lf *LayoutForm) tabs_SelectedIndexChanged(sender any, e goforms.EventArgs)
 // not where its stored bounds would put it.
 func (lf *LayoutForm) button1_Click(sender any, e goforms.MouseEventArgs) {
 	eventlog.Log(src+"/button1", "Click", "the DockFill button")
+}
+
+func (lf *LayoutForm) colorPickerButton2_Click(sender any, e goforms.MouseEventArgs) {
+	fmt.Print("Hello")
 }

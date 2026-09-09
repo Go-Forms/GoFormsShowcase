@@ -1,7 +1,7 @@
 package dialogsform
 
 import (
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 	"goformsshowcase/eventlog"
 )
 

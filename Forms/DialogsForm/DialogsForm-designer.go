@@ -1,6 +1,6 @@
 package dialogsform
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 // DialogsForm shows every dialog GoForms wraps. Fyne parents a dialog to a
 // window, and this form is that window - so each dialog appears over the

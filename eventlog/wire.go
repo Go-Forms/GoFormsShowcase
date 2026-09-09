@@ -1,6 +1,6 @@
 package eventlog
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 // eventful is anything carrying the inherited ControlEvents group - which is
 // every GoForms control, through ControlBase.

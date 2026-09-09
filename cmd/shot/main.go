@@ -18,7 +18,7 @@ import (
 	"sort"
 	"strings"
 
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 
 	aboutform "goformsshowcase/Forms/AboutForm"
 	controlsform "goformsshowcase/Forms/ControlsForm"

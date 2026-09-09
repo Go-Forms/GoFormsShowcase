@@ -1,6 +1,6 @@
 package layoutform
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 // LayoutForm demonstrates the parts of the framework you can only see by
 // resizing the window: anchoring, docking, and the layout panels.
@@ -40,6 +40,7 @@ type LayoutForm struct {
 	tabs               *goforms.TabControl
 	colorPickerButton2 *goforms.ColorPickerButton
 	button1            *goforms.Button
+	comboBox1 *goforms.ComboBox
 }
 
 // NewLayoutForm mirrors `new LayoutForm()`.
@@ -164,7 +165,7 @@ func (lf *LayoutForm) initializeComponent() {
 	// --- split container + tabs -------------------------------------------------
 	lf.split = goforms.NewSplitContainer(1052, 200, true)
 	lf.split.SetDock(goforms.DockBottom)
-	lf.split.SetBounds(12, 544, 1052, 200)
+	lf.split.SetBounds(0, 556, 1052, 200)
 	lf.split.SetAnchor(goforms.AnchorNone)
 	lf.AddControl(lf.split)
 
@@ -180,6 +181,7 @@ func (lf *LayoutForm) initializeComponent() {
 	lf.Load.Handle(lf.LayoutForm_Load)
 	lf.Resize.Handle(lf.LayoutForm_Resize)
 	lf.colorPickerButton2 = goforms.NewColorPickerButton("ColorPickerButton", lf.Form)
+	lf.colorPickerButton2.Click.Handle(lf.colorPickerButton2_Click)
 	lf.colorPickerButton2.SetTabIndex(4)
 	lf.colorPickerButton2.SetDock(goforms.DockNone)
 	lf.colorPickerButton2.SetTabStop(true)
@@ -191,4 +193,7 @@ func (lf *LayoutForm) initializeComponent() {
 	lf.button1.SetAnchor(goforms.AnchorTop | goforms.AnchorBottom | goforms.AnchorLeft | goforms.AnchorRight)
 	lf.button1.SetBounds(20, 20, 90, 30)
 	lf.dockFill.AddControl(lf.button1)
+	lf.comboBox1 = goforms.NewComboBox("fhfgh", "fgjgh")
+	lf.comboBox1.SetBounds(28, 9, 150, 30)
+	lf.flow.AddControl(lf.comboBox1)
 }

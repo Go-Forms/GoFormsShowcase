@@ -1,6 +1,6 @@
 package dataform
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 // DataForm shows the data controls, with the DataGridView's sizing and
 // scrolling flags switchable at runtime so their effect is visible rather

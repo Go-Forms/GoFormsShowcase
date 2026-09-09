@@ -3,7 +3,7 @@ package controlsform
 import (
 	"time"
 
-	"goforms"
+	"github.com/Go-Forms/GoForms"
 )
 
 // ControlsForm shows every input and display control GoForms has, each one

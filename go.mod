@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	fyne.io/fyne/v2 v2.8.0
-	goforms v0.0.0
+	github.com/Go-Forms/GoForms v0.1.0
 )
 
 require (
@@ -45,4 +45,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace goforms => ../GoForms
+replace github.com/Go-Forms/GoForms => ../GoForms

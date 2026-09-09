@@ -1,6 +1,6 @@
 package aboutform
 
-import "goforms"
+import "github.com/Go-Forms/GoForms"
 
 func (af *AboutForm) AboutForm_Load(sender any, e goforms.EventArgs) {
 	af.lblTitle.SetFont(goforms.NewFont("", 22, true, false))
