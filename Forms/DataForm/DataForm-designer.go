@@ -1,6 +1,6 @@
 package dataform
 
-import "github.com/Go-Forms/GoForms"
+import goforms "github.com/Go-Forms/GoForms"
 
 // DataForm shows the data controls, with the DataGridView's sizing and
 // scrolling flags switchable at runtime so their effect is visible rather
@@ -9,7 +9,7 @@ type DataForm struct {
 	*goforms.Form
 
 	grpGrid     *goforms.GroupBox
-	grid        *goforms.DataGridView
+	Grid        *goforms.DataGridView
 	lblColsMode *goforms.Label
 	cboColsMode *goforms.ComboBox
 	lblRowsMode *goforms.Label
@@ -28,6 +28,7 @@ type DataForm struct {
 
 	grpTree  *goforms.GroupBox
 	treeView *goforms.TreeView
+	EditRow  *goforms.Button
 }
 
 // NewDataForm mirrors `new DataForm()`.
@@ -46,14 +47,14 @@ func (df *DataForm) initializeComponent() {
 	df.grpGrid.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight)
 	df.AddControl(df.grpGrid)
 
-	df.grid = goforms.NewDataGridView("Order", "Customer", "Product", "Qty", "Total")
-	df.grid.SetBounds(16, 34, 1044, 280)
-	df.grid.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight)
-	df.grid.CellClick.Handle(df.grid_CellClick)
-	df.grid.SelectionChanged.Handle(df.grid_SelectionChanged)
-	df.grid.CellValueChanged.Handle(df.grid_CellValueChanged)
-	df.grid.RowsChanged.Handle(df.grid_RowsChanged)
-	df.grpGrid.AddControl(df.grid)
+	df.Grid = goforms.NewDataGridView("Order", "Customer", "Product", "Qty", "Total")
+	df.Grid.SetBounds(16, 34, 1044, 280)
+	df.Grid.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight)
+	df.Grid.CellClick.Handle(df.Grid_CellClick)
+	df.Grid.SelectionChanged.Handle(df.Grid_SelectionChanged)
+	df.Grid.CellValueChanged.Handle(df.Grid_CellValueChanged)
+	df.Grid.RowsChanged.Handle(df.Grid_RowsChanged)
+	df.grpGrid.AddControl(df.Grid)
 
 	df.lblColsMode = goforms.NewLabel("Columns:")
 	df.lblColsMode.SetBounds(16, 328, 70, 24)
@@ -134,10 +135,12 @@ func (df *DataForm) initializeComponent() {
 	df.treeView.SetBounds(16, 34, 502, 196)
 	df.treeView.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight | goforms.AnchorBottom)
 	df.treeView.NodeSelected.Handle(df.treeView_NodeSelected)
-	treeViewNode1 := df.treeView.AddNode(nil, "Node 1")
-	treeViewNode2 := df.treeView.AddNode(treeViewNode1, "Node 2")
-	df.treeView.AddNode(treeViewNode2, "Node 3")
+	// The nodes are added in DataForm.fillTree.
 	df.grpTree.AddControl(df.treeView)
 
 	df.Load.Handle(df.DataForm_Load)
+	df.EditRow = goforms.NewButton("Edit row")
+	df.EditRow.Click.Handle(df.EditRow_Click)
+	df.EditRow.SetBounds(510, 364, 110, 30)
+	df.grpGrid.AddControl(df.EditRow)
 }

@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Go-Forms/GoForms"
+	"fyne.io/fyne/v2"
+	goforms "github.com/Go-Forms/GoForms"
+
+	grideditrow "goformsshowcase/Forms/GridEditRow"
 	"goformsshowcase/eventlog"
 )
 
@@ -22,11 +25,11 @@ var sampleOrders = [][]string{
 
 func (df *DataForm) DataForm_Load(sender any, e goforms.EventArgs) {
 	for _, row := range sampleOrders {
-		df.grid.AddRow(row...)
+		df.Grid.AddRow(row...)
 	}
-	df.grid.SetRowHeight(30)
+	df.Grid.SetRowHeight(30)
 
-	// Start from the defaults so the combo boxes agree with the grid.
+	// Start from the defaults so the combo boxes agree with the Grid.
 	df.cboColsMode.SetSelectedItem("SizeFixed")
 	df.cboRowsMode.SetSelectedItem("SizeFixed")
 	df.cboScroll.SetSelectedItem("ScrollBarsBoth")
@@ -35,7 +38,7 @@ func (df *DataForm) DataForm_Load(sender any, e goforms.EventArgs) {
 	df.fillTree()
 	df.buildContextMenus()
 
-	eventlog.WireAll(src+"/grid", df.grid)
+	eventlog.WireAll(src+"/Grid", df.Grid)
 	eventlog.Log(src+"/Form", "Load", "data form opened")
 }
 
@@ -48,7 +51,7 @@ func (df *DataForm) fillListView() {
 		{"README.md", "11 KB"},
 		{"main.go", "344 B"},
 		{"go.mod", "1.9 KB"},
-		{"datagridview.go", "24 KB"},
+		{"dataGridview.go", "24 KB"},
 		{"interaction.go", "9 KB"},
 	}
 	for i, f := range files {
@@ -72,7 +75,7 @@ func (df *DataForm) fillTree() {
 	df.treeView.AddNode(pkg, "wire.go")
 }
 
-// buildContextMenus puts right-click menus on the grid and the list - both
+// buildContextMenus puts right-click menus on the Grid and the list - both
 // interactive controls, both impossible to give a context menu before the
 // interaction overlay.
 func (df *DataForm) buildContextMenus() {
@@ -84,7 +87,7 @@ func (df *DataForm) buildContextMenus() {
 	fit.Click.Handle(func(any, goforms.EventArgs) {
 		df.cboColsMode.SetSelectedItem("SizeToContent")
 	})
-	df.grid.SetContextMenu(goforms.NewContextMenu(dup, del, goforms.NewMenuSeparator(), fit))
+	df.Grid.SetContextMenu(goforms.NewContextMenu(dup, del, goforms.NewMenuSeparator(), fit))
 
 	clear := goforms.NewMenuItem("Clear list")
 	clear.Click.Handle(func(any, goforms.EventArgs) {
@@ -101,36 +104,36 @@ func (df *DataForm) buildContextMenus() {
 }
 
 func (df *DataForm) duplicateRow() {
-	r := df.grid.SelectedRow()
-	if r < 0 || r >= df.grid.RowCount() {
+	r := df.Grid.SelectedRow()
+	if r < 0 || r >= df.Grid.RowCount() {
 		return
 	}
-	row := df.grid.Rows()[r]
-	df.grid.InsertRow(r+1, append([]string(nil), row...)...)
+	row := df.Grid.Rows()[r]
+	df.Grid.InsertRow(r+1, append([]string(nil), row...)...)
 }
 
 func (df *DataForm) deleteRow() {
-	if r := df.grid.SelectedRow(); r >= 0 {
-		df.grid.RemoveRow(r)
+	if r := df.Grid.SelectedRow(); r >= 0 {
+		df.Grid.RemoveRow(r)
 	}
 }
 
 // --- designer-wired handlers ---------------------------------------------
 
-func (df *DataForm) grid_CellClick(sender any, e goforms.GridCellEventArgs) {
-	eventlog.Logf(src+"/grid", "CellClick", "row %d col %d", e.Row, e.Col)
+func (df *DataForm) Grid_CellClick(sender any, e goforms.GridCellEventArgs) {
+	eventlog.Logf(src+"/Grid", "CellClick", "row %d col %d", e.Row, e.Col)
 }
 
-func (df *DataForm) grid_SelectionChanged(sender any, e goforms.GridCellEventArgs) {
-	eventlog.Logf(src+"/grid", "SelectionChanged", "row %d col %d", e.Row, e.Col)
+func (df *DataForm) Grid_SelectionChanged(sender any, e goforms.GridCellEventArgs) {
+	eventlog.Logf(src+"/Grid", "SelectionChanged", "row %d col %d", e.Row, e.Col)
 }
 
-func (df *DataForm) grid_CellValueChanged(sender any, e goforms.GridCellValueEventArgs) {
-	eventlog.Logf(src+"/grid", "CellValueChanged", "[%d,%d] %q -> %q", e.Row, e.Col, e.OldValue, e.NewValue)
+func (df *DataForm) Grid_CellValueChanged(sender any, e goforms.GridCellValueEventArgs) {
+	eventlog.Logf(src+"/Grid", "CellValueChanged", "[%d,%d] %q -> %q", e.Row, e.Col, e.OldValue, e.NewValue)
 }
 
-func (df *DataForm) grid_RowsChanged(sender any, e goforms.EventArgs) {
-	eventlog.Logf(src+"/grid", "RowsChanged", "%d rows", df.grid.RowCount())
+func (df *DataForm) Grid_RowsChanged(sender any, e goforms.EventArgs) {
+	eventlog.Logf(src+"/Grid", "RowsChanged", "%d rows", df.Grid.RowCount())
 }
 
 func (df *DataForm) cboColsMode_SelectedIndexChanged(sender any, e goforms.EventArgs) {
@@ -139,8 +142,8 @@ func (df *DataForm) cboColsMode_SelectedIndexChanged(sender any, e goforms.Event
 		"SizeToContent": goforms.SizeToContent,
 		"SizeFill":      goforms.SizeFill,
 	}[df.cboColsMode.SelectedItem()]
-	df.grid.SetAutoSizeColumnsMode(mode)
-	eventlog.Logf(src+"/grid", "ColumnsMode", "%s", df.cboColsMode.SelectedItem())
+	df.Grid.SetAutoSizeColumnsMode(mode)
+	eventlog.Logf(src+"/Grid", "ColumnsMode", "%s", df.cboColsMode.SelectedItem())
 }
 
 func (df *DataForm) cboRowsMode_SelectedIndexChanged(sender any, e goforms.EventArgs) {
@@ -148,8 +151,8 @@ func (df *DataForm) cboRowsMode_SelectedIndexChanged(sender any, e goforms.Event
 	if df.cboRowsMode.SelectedItem() == "SizeToContent" {
 		mode = goforms.SizeToContent
 	}
-	df.grid.SetAutoSizeRowsMode(mode)
-	eventlog.Logf(src+"/grid", "RowsMode", "%s", df.cboRowsMode.SelectedItem())
+	df.Grid.SetAutoSizeRowsMode(mode)
+	eventlog.Logf(src+"/Grid", "RowsMode", "%s", df.cboRowsMode.SelectedItem())
 }
 
 func (df *DataForm) cboScroll_SelectedIndexChanged(sender any, e goforms.EventArgs) {
@@ -159,32 +162,32 @@ func (df *DataForm) cboScroll_SelectedIndexChanged(sender any, e goforms.EventAr
 		"ScrollBarsVertical":   goforms.ScrollBarsVertical,
 		"ScrollBarsBoth":       goforms.ScrollBarsBoth,
 	}[df.cboScroll.SelectedItem()]
-	df.grid.SetScrollBars(bars)
-	eventlog.Logf(src+"/grid", "ScrollBars", "%s", df.cboScroll.SelectedItem())
+	df.Grid.SetScrollBars(bars)
+	eventlog.Logf(src+"/Grid", "ScrollBars", "%s", df.cboScroll.SelectedItem())
 }
 
 func (df *DataForm) numRowH_ValueChanged(sender any, e goforms.EventArgs) {
 	h := float32(df.numRowH.Value())
-	df.grid.SetRowHeight(h)
+	df.Grid.SetRowHeight(h)
 	// SetRowHeight also switches rows back to the fixed mode, so keep the
 	// combo box honest rather than letting it claim otherwise.
 	df.cboRowsMode.SetSelectedItem("SizeFixed")
-	eventlog.Logf(src+"/grid", "RowHeight", "%.0f", h)
+	eventlog.Logf(src+"/Grid", "RowHeight", "%.0f", h)
 }
 
 func (df *DataForm) chkReadOnly_CheckedChanged(sender any, e goforms.EventArgs) {
-	df.grid.SetReadOnly(df.chkReadOnly.Checked())
-	eventlog.Logf(src+"/grid", "ReadOnly", "%v", df.chkReadOnly.Checked())
+	df.Grid.SetReadOnly(df.chkReadOnly.Checked())
+	eventlog.Logf(src+"/Grid", "ReadOnly", "%v", df.chkReadOnly.Checked())
 }
 
 func (df *DataForm) chkLines_CheckedChanged(sender any, e goforms.EventArgs) {
-	df.grid.SetGridLines(df.chkLines.Checked())
-	eventlog.Logf(src+"/grid", "GridLines", "%v", df.chkLines.Checked())
+	df.Grid.SetGridLines(df.chkLines.Checked())
+	eventlog.Logf(src+"/Grid", "GridLines", "%v", df.chkLines.Checked())
 }
 
 func (df *DataForm) btnAddRow_Click(sender any, e goforms.MouseEventArgs) {
-	n := df.grid.RowCount() + 1001
-	df.grid.AddRow(fmt.Sprintf("%d", n), "New customer", "New product", "1", "$0.00")
+	n := df.Grid.RowCount() + 1001
+	df.Grid.AddRow(fmt.Sprintf("%d", n), "New customer", "New product", "1", "$0.00")
 }
 
 func (df *DataForm) btnDelRow_Click(sender any, e goforms.MouseEventArgs) {
@@ -199,4 +202,43 @@ func (df *DataForm) treeView_NodeSelected(sender any, e goforms.EventArgs) {
 	if n := df.treeView.SelectedNode(); n != nil {
 		eventlog.Logf(src+"/treeView", "NodeSelected", "%s", n.Text)
 	}
+}
+
+// EditRow_Click is the other half of the grid demo: instead of editing a cell
+// in place, hand the whole row to a modal form and write back what it returns.
+//
+// The row index is read once, here, and captured by the goroutine - the
+// dialog itself never sees the grid. On the desktop the owner form stays
+// live while a modal child is up, so the user can select a different row (or
+// open a second editor) while this one is open; capturing the index means
+// each editor still saves over the row it was opened on.
+func (df *DataForm) EditRow_Click(sender any, e goforms.MouseEventArgs) {
+	row := df.Grid.SelectedRow()
+	if row < 0 || row >= df.Grid.RowCount() {
+		eventlog.Log(src+"/Grid", "EditRow", "nothing selected")
+		goforms.ShowMessageBox(df.Form, "Select a row in the grid first.", "Edit row",
+			goforms.MessageBoxOK, goforms.MessageBoxInformation, nil)
+		return
+	}
+
+	values := df.Grid.Rows()[row]
+	editForm := grideditrow.NewGridEditRow()
+	editForm.SetCaption(fmt.Sprintf("Editing order %s", values[grideditrow.FieldOrder]))
+	editForm.Load(values)
+
+	// ShowDialog blocks, so it must run off the UI goroutine (see the warning
+	// on Form.ShowDialog); fyne.Do hops back with the answer.
+	go func() {
+		result := editForm.ShowDialog()
+		fyne.Do(func() {
+			if result != goforms.DialogOK {
+				eventlog.Logf(src+"/Grid", "EditRow", "row %d left unchanged", row)
+				return
+			}
+			for col, v := range editForm.Values() {
+				df.Grid.SetCell(row, col, v)
+			}
+			eventlog.Logf(src+"/Grid", "EditRow", "row %d saved", row)
+		})
+	}()
 }
