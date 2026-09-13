@@ -1,6 +1,11 @@
 package dialogsform
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Go-Forms/GoForms"
 	"goformsshowcase/eventlog"
 )
@@ -77,9 +82,36 @@ func (df *DialogsForm) btnOpen_Click(sender any, e goforms.MouseEventArgs) {
 			eventlog.Log(src+"/OpenFileDialog", "Cancelled", "")
 			return
 		}
-		df.txtResult.SetText(path)
 		eventlog.Logf(src+"/OpenFileDialog", "FileName", "%s", path)
+
+		// Reading it is the point of having opened it - and it is what
+		// differs in a browser, where the file arrives as bytes with no
+		// path behind them.
+		data, err := dlg.ReadAll()
+		if err != nil {
+			df.txtResult.SetText(path + " (could not be read: " + err.Error() + ")")
+			eventlog.Logf(src+"/OpenFileDialog", "ReadAll", "failed: %v", err)
+			return
+		}
+		df.txtResult.SetText(fmt.Sprintf("%s - %d bytes, first line: %s", path, len(data), firstLine(data)))
+		eventlog.Logf(src+"/OpenFileDialog", "ReadAll", "%d bytes", len(data))
 	})
+}
+
+// firstLine is a readable sample of a file, for showing that it really was
+// read rather than just named.
+func firstLine(data []byte) string {
+	line := string(data)
+	if i := strings.IndexAny(line, "\r\n"); i >= 0 {
+		line = line[:i]
+	}
+	if len(line) > 60 {
+		line = line[:60] + "..."
+	}
+	if line == "" {
+		return "(empty)"
+	}
+	return strconv.Quote(line)
 }
 
 func (df *DialogsForm) btnSave_Click(sender any, e goforms.MouseEventArgs) {
@@ -90,8 +122,18 @@ func (df *DialogsForm) btnSave_Click(sender any, e goforms.MouseEventArgs) {
 			eventlog.Log(src+"/SaveFileDialog", "Cancelled", "")
 			return
 		}
-		df.txtResult.SetText(path)
 		eventlog.Logf(src+"/SaveFileDialog", "FileName", "%s", path)
+
+		// And writing it: on the desktop this lands on disk, in a browser
+		// it arrives as a download.
+		body := []byte("Saved from the GoForms showcase at " + time.Now().Format(time.RFC3339) + "\n")
+		if err := dlg.WriteAll(body); err != nil {
+			df.txtResult.SetText(path + " (could not be written: " + err.Error() + ")")
+			eventlog.Logf(src+"/SaveFileDialog", "WriteAll", "failed: %v", err)
+			return
+		}
+		df.txtResult.SetText(fmt.Sprintf("%s - %d bytes written", path, len(body)))
+		eventlog.Logf(src+"/SaveFileDialog", "WriteAll", "%d bytes", len(body))
 	})
 }
 
