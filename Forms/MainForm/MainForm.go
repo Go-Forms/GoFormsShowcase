@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"fyne.io/fyne/v2"
+	goforms "github.com/Go-Forms/GoForms"
 
-	"github.com/Go-Forms/GoForms"
 	aboutform "goformsshowcase/Forms/AboutForm"
 	controlsform "goformsshowcase/Forms/ControlsForm"
 	dataform "goformsshowcase/Forms/DataForm"
@@ -313,6 +313,3 @@ func (mf *MainForm) menuData_Click(sender any, e goforms.EventArgs)     { mf.sho
 func (mf *MainForm) menuLayout_Click(sender any, e goforms.EventArgs)   { mf.showLayout() }
 func (mf *MainForm) menuDialogs_Click(sender any, e goforms.EventArgs)  { mf.showDialogs() }
 func (mf *MainForm) menuAbout_Click(sender any, e goforms.EventArgs)    { mf.showAbout() }
-
-func (mf *MainForm) toolStrip_Button4() {
-}

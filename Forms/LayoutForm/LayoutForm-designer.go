@@ -36,11 +36,13 @@ type LayoutForm struct {
 	table    *goforms.TableLayoutPanel
 
 	// split container and tabs
-	split              *goforms.SplitContainer
-	tabs               *goforms.TabControl
-	colorPickerButton2 *goforms.ColorPickerButton
-	button1            *goforms.Button
-	comboBox1 *goforms.ComboBox
+	split *goforms.SplitContainer
+	tabs  *goforms.TabControl
+
+	// btnDockFill fills the DockFill panel above, and is the proof that a
+	// docked control takes input where it is drawn rather than where its
+	// stored bounds would put it.
+	btnDockFill *goforms.Button
 }
 
 // NewLayoutForm mirrors `new LayoutForm()`.
@@ -174,26 +176,17 @@ func (lf *LayoutForm) initializeComponent() {
 	lf.tabs.SetBounds(11, 7, 500, 190)
 	lf.tabs.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight | goforms.AnchorBottom)
 	lf.tabs.SelectedIndexChanged.Handle(lf.tabs_SelectedIndexChanged)
-	lf.tabs.AddTab("Tab 1")
-	lf.tabs.AddTab("Tab 2")
 	lf.split.Panel2().AddControl(lf.tabs)
+
+	// The pages themselves are added in LayoutForm.fillSplitAndTabs.
+
+	lf.btnDockFill = goforms.NewButton("Docked to fill - click me")
+	lf.btnDockFill.SetBounds(20, 20, 90, 30)
+	lf.btnDockFill.SetDock(goforms.DockFill)
+	lf.btnDockFill.SetAnchor(goforms.AnchorTop | goforms.AnchorBottom | goforms.AnchorLeft | goforms.AnchorRight)
+	lf.btnDockFill.Click.Handle(lf.btnDockFill_Click)
+	lf.dockFill.AddControl(lf.btnDockFill)
 
 	lf.Load.Handle(lf.LayoutForm_Load)
 	lf.Resize.Handle(lf.LayoutForm_Resize)
-	lf.colorPickerButton2 = goforms.NewColorPickerButton("ColorPickerButton", lf.Form)
-	lf.colorPickerButton2.Click.Handle(lf.colorPickerButton2_Click)
-	lf.colorPickerButton2.SetTabIndex(4)
-	lf.colorPickerButton2.SetDock(goforms.DockNone)
-	lf.colorPickerButton2.SetTabStop(true)
-	lf.colorPickerButton2.SetBounds(20, 20, 229, 99)
-	lf.tabs.TabPages()[0].AddControl(lf.colorPickerButton2)
-	lf.button1 = goforms.NewButton("Button")
-	lf.button1.Click.Handle(lf.button1_Click)
-	lf.button1.SetDock(goforms.DockFill)
-	lf.button1.SetAnchor(goforms.AnchorTop | goforms.AnchorBottom | goforms.AnchorLeft | goforms.AnchorRight)
-	lf.button1.SetBounds(20, 20, 90, 30)
-	lf.dockFill.AddControl(lf.button1)
-	lf.comboBox1 = goforms.NewComboBox("fhfgh", "fgjgh")
-	lf.comboBox1.SetBounds(28, 9, 150, 30)
-	lf.flow.AddControl(lf.comboBox1)
 }

@@ -9,7 +9,8 @@
 //
 //	go run ./cmd/shot <form>
 //
-// where <form> is one of: main, controls, data, layout, dialogs, about.
+// where <form> is one of: main, controls, data, layout, dialogs, about,
+// editrow.
 package main
 
 import (
@@ -24,6 +25,7 @@ import (
 	controlsform "goformsshowcase/Forms/ControlsForm"
 	dataform "goformsshowcase/Forms/DataForm"
 	dialogsform "goformsshowcase/Forms/DialogsForm"
+	grideditrow "goformsshowcase/Forms/GridEditRow"
 	layoutform "goformsshowcase/Forms/LayoutForm"
 	mainform "goformsshowcase/Forms/MainForm"
 )
@@ -35,6 +37,14 @@ var forms = map[string]func() *goforms.Form{
 	"layout":   func() *goforms.Form { return layoutform.NewLayoutForm().Form },
 	"dialogs":  func() *goforms.Form { return dialogsform.NewDialogsForm().Form },
 	"about":    func() *goforms.Form { return aboutform.NewAboutForm().Form },
+	// DataForm's modal row editor, shown standalone and pre-filled the way
+	// "Edit row" would hand it a selected order.
+	"editrow": func() *goforms.Form {
+		f := grideditrow.NewGridEditRow()
+		f.SetCaption("Editing order 1003")
+		f.Load([]string{"1003", "Initech", "Stapler\n(red)", "1", "$3,999.99"})
+		return f.Form
+	},
 }
 
 func main() {

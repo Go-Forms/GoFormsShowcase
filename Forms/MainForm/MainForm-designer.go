@@ -32,8 +32,6 @@ type MainForm struct {
 	clock       *goforms.Timer
 	// logTimer batches the event log's repaints; see MainForm.appendEntry.
 	logTimer *goforms.Timer
-	button1  *goforms.Button
-	button2  *goforms.Button
 }
 
 // NewMainForm mirrors `new MainForm()` - allocate, then initializeComponent.
@@ -52,10 +50,8 @@ func (mf *MainForm) initializeComponent() {
 	mf.toolStrip = goforms.NewToolStrip()
 	mf.toolStrip.SetBounds(0, 0, 1000, 34)
 	mf.toolStrip.SetAnchor(goforms.AnchorTop | goforms.AnchorLeft | goforms.AnchorRight)
-	mf.toolStrip.AddButton("Button 4", mf.toolStrip_Button4)
-	mf.toolStrip.AddSeparator()
-	mf.toolStrip.AddSeparator()
-	mf.toolStrip.AddButton("Button 1", nil)
+	// The buttons are added in MainForm.buildToolStrip, where the handlers
+	// they call live.
 	mf.AddControl(mf.toolStrip)
 
 	// --- demo form launcher ---------------------------------------------
@@ -148,10 +144,4 @@ func (mf *MainForm) initializeComponent() {
 	mf.Closed.Handle(mf.MainForm_Closed)
 	mf.Resize.Handle(mf.MainForm_Resize)
 	mf.KeyDown.Handle(mf.MainForm_KeyDown)
-	mf.button1 = goforms.NewButton("Button")
-	mf.button1.SetBounds(92, 401, 90, 30)
-	mf.AddControl(mf.button1)
-	mf.button2 = goforms.NewButton("Button")
-	mf.button2.SetBounds(92, 456, 90, 30)
-	mf.AddControl(mf.button2)
 }

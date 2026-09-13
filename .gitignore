@@ -7,6 +7,13 @@
 /dist/
 /bin/
 
+# Where "GoForms: Build..." puts the desktop binary, the WebAssembly bundle
+# and the packaged .apk. All three are hundreds of megabytes and all three
+# are reproducible from this source, so none of them belong here.
+/build/
+*.apk
+*.wasm
+
 # Test artifacts
 *.test
 *.out

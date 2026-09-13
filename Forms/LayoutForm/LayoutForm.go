@@ -140,13 +140,9 @@ func (lf *LayoutForm) tabs_SelectedIndexChanged(sender any, e goforms.EventArgs)
 	}
 }
 
-// button1_Click is wired to the button docked into the DockFill panel, so
+// btnDockFill_Click is wired to the button docked into the DockFill panel, so
 // clicking it shows that a docked control takes input where it is drawn,
 // not where its stored bounds would put it.
-func (lf *LayoutForm) button1_Click(sender any, e goforms.MouseEventArgs) {
-	eventlog.Log(src+"/button1", "Click", "the DockFill button")
-}
-
-func (lf *LayoutForm) colorPickerButton2_Click(sender any, e goforms.MouseEventArgs) {
-	fmt.Print("Hello")
+func (lf *LayoutForm) btnDockFill_Click(sender any, e goforms.MouseEventArgs) {
+	eventlog.Log(src+"/btnDockFill", "Click", "the DockFill button")
 }

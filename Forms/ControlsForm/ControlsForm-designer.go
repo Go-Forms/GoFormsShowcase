@@ -137,18 +137,20 @@ func (cf *ControlsForm) initializeComponent() {
 	cf.chkAgree.CheckedChanged.Handle(cf.chkAgree_CheckedChanged)
 	cf.grpChoice.AddControl(cf.chkAgree)
 
+	// The three sizes share the column with the check box, the combo and the
+	// up-down below them: they have to end before the lists start at 320.
 	cf.rbSmall = goforms.NewRadioButton("Small")
-	cf.rbSmall.SetBounds(16, 64, 110, 28)
+	cf.rbSmall.SetBounds(16, 64, 96, 28)
 	cf.rbSmall.CheckedChanged.Handle(cf.size_CheckedChanged)
 	cf.grpChoice.AddControl(cf.rbSmall)
 
 	cf.rbMedium = goforms.NewRadioButton("Medium")
-	cf.rbMedium.SetBounds(136, 64, 110, 28)
+	cf.rbMedium.SetBounds(112, 64, 104, 28)
 	cf.rbMedium.CheckedChanged.Handle(cf.size_CheckedChanged)
 	cf.grpChoice.AddControl(cf.rbMedium)
 
 	cf.rbLarge = goforms.NewRadioButton("Large")
-	cf.rbLarge.SetBounds(256, 64, 110, 28)
+	cf.rbLarge.SetBounds(216, 64, 96, 28)
 	cf.rbLarge.CheckedChanged.Handle(cf.size_CheckedChanged)
 	cf.grpChoice.AddControl(cf.rbLarge)
 
@@ -169,12 +171,12 @@ func (cf *ControlsForm) initializeComponent() {
 	cf.grpChoice.AddControl(cf.dudPriority)
 
 	cf.lstFruit = goforms.NewListBox("Apple", "Banana", "Cherry", "Dragonfruit", "Elderberry")
-	cf.lstFruit.SetBounds(240, 32, 220, 240)
+	cf.lstFruit.SetBounds(320, 32, 200, 240)
 	cf.lstFruit.SelectedIndexChanged.Handle(cf.lstFruit_SelectedIndexChanged)
 	cf.grpChoice.AddControl(cf.lstFruit)
 
 	cf.clbToppings = goforms.NewCheckedListBox("Cheese", "Basil", "Olives", "Chilli", "Anchovies")
-	cf.clbToppings.SetBounds(478, 32, 220, 240)
+	cf.clbToppings.SetBounds(536, 32, 200, 240)
 	cf.clbToppings.ItemCheck.Handle(cf.clbToppings_ItemCheck)
 	cf.grpChoice.AddControl(cf.clbToppings)
 
